@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>nana</title>
+</head>
+<body>
+<canvas id="mycanvas" width="400" height="400" style="border: 4px solid orangered"></canvas>
+<h1 id="score"></h1>
+<input type="button" value="Stop" onclick="stop()">
+<input type="button" value="Resume" onclick="resume()">
+<script>
+    let run = new Audio();
+    run.src = "sound/start.mp3"
+    var ctx = document.getElementById('mycanvas').getContext('2d');
+    let d ;
+    let score = 0 ;
+    let gameover = false;
+    let Snake = function () {
+        this.speed = 5;
+        this.array = [];
+        this.radius = 10 ;
+        this.getArray = function () {
+            this.array[0] = {
+                x: 80,
+                y: 80
+            }
+        };
+        function taoSnake() {
+            ctx.beginPath();
+            ctx.arc(this.array[0].x, this.array[0].y, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = "#1730ff";
+            ctx.fill();
+            ctx.stroke();
+        }
+        function taoDuoi() {
+            for(let i = this.array.length-1;i>0;i--){
+                // if(stop = 1 ){break}
+                ctx.beginPath();
+                this.array[i].x = this.array[i-1].x;
+                this.array[i].y = this.array[i-1].y;
+                ctx.arc(this.array[i].x,this.array[i].y,this.radius,0,2*Math.PI);
+                ctx.fillStyle = "#ff3f4b";
+                ctx.fill();
+            }
+        }
+        //dau cham duoi
+        function headVsArray() {
+            for(let i = 2; i<this.array.length;i++){
+                if(this.array[0].x == this.array[i].x && this.array[0].y == this.array[i].y){
+                    clearInterval(game);
+                    alert('Game over')
+
+                }
+            }
+        }
+        this.taoSnake = taoSnake;
+        this.taoDuoi = taoDuoi;
+        this.headVsArray = headVsArray;
+
+    };
+    let snake = new Snake();
+    snake.getArray();
+    let Food = function () {
+        this.x = Math.floor(Math.random() * 101) * 3;
+        this.y = Math.floor(Math.random() * 101) * 3;
+        // this.radius = (Math.floor(Math.random()*10));
+
+        this.taoFood = taoFood;
+
+        function taoFood() {
+            this.radius = 10;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = "#27ff5d";
+            ctx.fill();
+            ctx.stroke();
+
+        }
+    }
+
+        let food = new Food();
+    function snakeVsFood() {
+        if (Math.abs(snake.array[0].x - food.x) <= 20 && Math.abs(snake.array[0].y - food.y) <= 20) {
+            score++;
+            snake.array.push({x: food.x, y: food.y});
+            food.x = Math.floor(Math.random() * 10 + 10) * 10;
+            food.y = Math.floor(Math.random() * 10 + 10) * 10;
+        }
+    }
+        document.addEventListener('keydown', move);
+        function move(event) {
+            if (event.keyCode == 37 && d != "sangPhai") {
+                d = "sangTrai";
+            } else if (event.keyCode == 38 && d != "xuongDuoi") {
+                d = "lenTren";
+            } else if (event.keyCode == 39 && d != "sangTrai") {
+                d = "sangPhai";
+            } else if (event.keyCode == 40 && d != "lenTren") {
+                d = "xuongDuoi";
+            }
+            switch (event.keyCode) {
+                case 83 :
+                    stop() ;
+                    break;
+                case 82 :
+                    resume();
+                    break;s
+
+            }
+
+
+        }
+        function Khoitao() {
+             run.play();
+            ctx.clearRect(0, 0, 400, 400);
+            snake.taoSnake();
+            food.taoFood();
+            snakeVsFood();
+            snake.taoDuoi();
+            snake.headVsArray();
+            //huowng di chuyen
+            if (d == 'sangTrai') {
+                snake.array[0].x -= snake.speed;
+            }
+            if (d == 'sangPhai') {
+                snake.array[0].x += snake.speed;
+            }
+            if (d == 'lenTren') {
+                snake.array[0].y -= snake.speed;
+            }
+            if (d == 'xuongDuoi') {
+                snake.array[0].y += snake.speed;
+            }
+//cham vien
+
+            if(snake.array[0].x >400){snake.array[0].x = 0}
+            document.getElementById("score").innerHTML = "Score: " + score;
+            if(snake.array[0].x < 0){snake.array[0].x = 400}
+            document.getElementById("score").innerHTML = "Score: " + score;
+            if(snake.array[0].y > 400){snake.array[0].y = 0}
+            document.getElementById("score").innerHTML = "Score: " + score;
+            if(snake.array[0].y < 0){snake.array[0].y = 400}
+
+            document.getElementById("score").innerHTML = "Score: " + score;
+
+
+        }
+         function stop() {
+            snake.speed = 0
+         }
+        function resume() {
+            snake.speed = 5
+        }
+
+
+    let game = setInterval(Khoitao, 50);
+
+
+
+
+
+
+</script>
+</body>
+</html>
