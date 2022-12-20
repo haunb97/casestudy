@@ -1,0 +1,38 @@
+body {
+  background-image: url("../images/bg.jpg");
+  z-index: 9999;
+}
+
+#mycanvas {
+  background-origin: border-box;
+  border: 8px solid darkgray;
+}
+
+#score {
+  display: flex;
+  vertical-align: center;
+}
+
+h2 {
+  color: #f05f5f;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.actions {
+  display: flex;
+  padding: 10px;
+}
+
+button {
+  margin: 5px;
+}
