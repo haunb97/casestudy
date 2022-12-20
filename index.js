@@ -279,6 +279,7 @@ function resume() {
 function play() {
   food = new Food();
   snake = new Snake();
+  score = 0;
   if (timeCreateSnake) {
     clearInterval(timeCreateSnake);
   }
